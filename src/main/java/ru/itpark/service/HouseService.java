@@ -10,8 +10,8 @@ import java.util.*;
 public class HouseService {
     private Collection<House> houses;
 
-    public HouseService() throws SQLException {
-        this.houses = JdbcTemplate.executeQuery(
+    public List<House> getAll() throws SQLException {
+        return JdbcTemplate.executeQuery(
                 "jdbc:sqlite:db.sqlite",
                 "SELECT id, price, district, underground FROM houses",
                 resultSet -> (new House(
@@ -21,8 +21,8 @@ public class HouseService {
                         resultSet.getString("underground")
                 )));
     }
-    public List<House> sort(Comparator<House> comparator) {
-        List<House> result = new ArrayList<>(houses);
+    public List<House> sort(Comparator<House> comparator) throws SQLException {
+        List<House> result = getAll();
         result.sort(comparator);
         return result;
     }
